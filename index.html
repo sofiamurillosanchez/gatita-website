@@ -500,18 +500,17 @@
     cursor: none;
   }
 
-  .gallery-item:nth-child(1) { grid-column: span 5; }
+  .gallery-item:nth-child(1) { grid-column: span 4; }
   .gallery-item:nth-child(2) { grid-column: span 4; }
-  .gallery-item:nth-child(3) { grid-column: span 3; }
+  .gallery-item:nth-child(3) { grid-column: span 4; }
   .gallery-item:nth-child(4) { grid-column: span 4; }
-  .gallery-item:nth-child(5) { grid-column: span 3; }
-  .gallery-item:nth-child(6) { grid-column: span 5; }
+  .gallery-item:nth-child(5) { grid-column: span 4; }
+  .gallery-item:nth-child(6) { grid-column: span 4; }
   .gallery-item:nth-child(7) { grid-column: span 4; }
-  .gallery-item:nth-child(8) { grid-column: span 3; }
 
   .gallery-artwork {
   width: 100%;
-  height: 350px; /* adjust this to whatever height feels right */
+  height: auto;
   overflow: hidden;
 }
 
@@ -863,7 +862,7 @@
 
   <div class="gallery-grid reveal">
     <!-- Item 1: Large -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="ink">
       <a href="https://www.instagram.com/p/DWUsrRJj41o/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
         <div class="gallery-artwork"> 
             <img src="Images/sink-tivities.png" alt="sink-tivities" class="art-placeholder"> 
@@ -876,7 +875,7 @@
     </div>
 
     <!-- Item 2 -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="ink">
       <a href="https://www.instagram.com/p/DVbw82YD9A_/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
         <img src="Images/consentida.png" alt="consentida" class="art-placeholder">
@@ -889,7 +888,7 @@
     </div>
 
     <!-- Item 3 -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="ink">
       <a href="https://www.instagram.com/p/DVpSIuVib78/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
           <img src="Images/a walk in the park.png" alt="a walk in the park" class="art-placeholder">
@@ -902,7 +901,7 @@
     </div>
 
     <!-- Item 4 -->
-    <div class="gallery-item"> 
+    <div class="gallery-item" data-medium="watercolor ink"> 
       <a href="https://www.instagram.com/p/DVeg-ELjx84/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
         <img src="Images/if i fits i sits.png" alt="if i fits i sits" class="art-placeholder">
@@ -915,7 +914,7 @@
     </div>
 
     <!-- Item 5 -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="ink">
       <a href="https://www.instagram.com/p/DXUj03UEeEP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
         <img src="Images/curiosity in action.png" alt="curiosity in action" class="art-placeholder">
@@ -928,7 +927,7 @@
     </div>
 
     <!-- Item 6 -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="watercolor">
       <a href="https://www.instagram.com/p/DVhQX1AjzOx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
         <Img src="Images/some light reading.png" alt="some light reading" class="art-placeholder"></Img>
@@ -941,7 +940,7 @@
     </div>
 
     <!-- Item 7 -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-medium="ink">
       <a href="https://www.instagram.com/p/DVbqkEVDyBS/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
         <img src="Images/meerkat kitty.png" alt="meerkat kitty" class="art-placeholder">
@@ -1103,11 +1102,22 @@
 
   // Gallery filter buttons
   document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.textContent.trim().toLowerCase();
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      if (filter === 'all') {
+        item.style.display = '';
+      } else {
+        const medium = (item.dataset.medium || '').toLowerCase();
+        item.style.display = medium.includes(filter) ? '' : 'none';
+      }
     });
   });
+});
 
   // Form submit feedback
   function sendMail(e) {
