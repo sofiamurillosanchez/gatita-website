@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gatita — Art Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital@0;1&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --cream: #f5f0e8;
-    --warm-white: #faf7f2;
+    --cream: #ffffff;
+    --warm-white: #ffffff;
     --ink: #1a1612;
     --charcoal: #2e2925;
-    --dusty-rose: #c4927a;
+    --navy: #1B3A6B;
     --blush: #e8d5c4;
     --sage: #8a9e8c;
     --fog: #b8b0a6;
     --pencil: #6b6560;
-    --paper: #ede8de;
+    --paper: #ffffff;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,61 +26,136 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--cream);
+    background: #ffffff;
     color: var(--ink);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
     cursor: none;
   }
 
-  /* Custom cursor */
-  .cursor {
+  /* ── CURSOR (matching Lovable exactly) ── */
+  .cursor-paw {
     position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--ink);
-    border-radius: 50%;
+    top: 0; left: 0;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, background 0.2s;
+    color: var(--ink);
+    will-change: transform;
   }
   .cursor-ring {
     position: fixed;
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--dusty-rose);
+    top: 0; left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1.5px dashed var(--ink);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.18s ease;
-    opacity: 0.7;
+    opacity: 0.45;
+    margin-left: -20px;
+    margin-top: -20px;
+    transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+    will-change: transform;
+  }
+  .cursor-ring.is-hover {
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    margin-top: -28px;
+    opacity: 0.75;
+    border-color: var(--dusty-rose);
+  }
+  .cursor-paw.is-hover svg {
+    transform: scale(1.25);
+  }
+  .cursor-paw svg {
+    transition: transform 0.15s ease;
   }
 
-  /* Grain texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9000;
-    opacity: 0.5;
+  /* ── FULL-WIDTH CAT CHASE (matching Lovable WalkingCat + YarnBall) ── */
+  .cat-chase {
+    width: 100%;
+    height: 90px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
   }
+
+  .cat-chase::after {
+    content: '';
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--ink);
+    opacity: 0.07;
+  }
+
+  .chase-ball {
+    position: absolute;
+    bottom: 20px;
+    width: 32px;
+    height: 32px;
+    animation: ballChase 15s linear infinite;
+  }
+
+  .chase-cat {
+    position: absolute;
+    bottom: 20px;
+    animation: catChase 15s linear infinite;
+  }
+
+  /* legs animate via alternating translateY on pairs */
+  .cat-leg-front {
+    animation: legSwingF 0.3s ease-in-out infinite alternate;
+    transform-origin: center top;
+  }
+  .cat-leg-back {
+    animation: legSwingB 0.3s ease-in-out infinite alternate;
+    transform-origin: center top;
+  }
+  .cat-tail-path {
+    transform-origin: 16px 22px;
+    animation: tailFlick 0.45s ease-in-out infinite alternate;
+  }
+
+  @keyframes ballChase {
+    0%   { left: 105%; }
+    100% { left: -5%;  }
+  }
+  /* Cat starts 100px behind the ball and stays behind throughout */
+  @keyframes catChase {
+    0%   { left: calc(105% + 100px); }
+    100% { left: calc(-5%  + 100px); }
+  }
+  @keyframes legSwingF {
+    from { transform: translateY(0px) rotate(-12deg); }
+    to   { transform: translateY(3px) rotate(12deg); }
+  }
+  @keyframes legSwingB {
+    from { transform: translateY(3px) rotate(12deg); }
+    to   { transform: translateY(0px) rotate(-12deg); }
+  }
+  @keyframes tailFlick {
+    from { transform: rotate(-15deg); }
+    to   { transform: rotate(22deg); }
+  }
+
+  /* no grain overlay — clean white */
 
   /* ── NAV ── */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 48px;
-    background: transparent;
-    mix-blend-mode: multiply;
-  }
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  background: rgba(255, 255, 255, 0.0001);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(12px);
+}
 
   .nav-logo {
     display: flex;
@@ -100,7 +175,7 @@
     text-decoration: none;
     color: var(--charcoal);
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: 20px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     position: relative;
@@ -128,22 +203,21 @@
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
-    position: relative;
-    display: flex;
+    position: relative; 
     align-items: center;
     overflow: hidden;
   }
 
   /* YOUR DRAWING goes here — swap src when ready */
   .hero-drawing-bg {
-    position: absolute;
-    inset: 0;
-    background-image: url('your-drawing-here.jpg'); /* ← replace with your image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* Placeholder tint while empty — remove when image is added */
-    background-color: var(--paper);
+  position: absolute;
+  inset: 0;
+  background-image: url('Images/home page (6).png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  background-color: #ffffff;
   }
 
   /* Semi-transparent cream wash over the drawing */
@@ -153,10 +227,10 @@
     inset: 0;
     background: linear-gradient(
       105deg,
-      rgba(245, 240, 232, 0.88) 0%,
-      rgba(245, 240, 232, 0.82) 40%,
-      rgba(245, 240, 232, 0.45) 70%,
-      rgba(245, 240, 232, 0.15) 100%
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.85) 40%,
+      rgba(255, 255, 255, 0.45) 70%,
+      rgba(255, 255, 255, 0.15) 100%
     );
   }
 
@@ -213,11 +287,11 @@
 
   .hero-tag {
     font-family: 'Space Mono', monospace;
-    font-size: 9px;
+    font-size: 18px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--fog);
-    margin-bottom: 24px;
+    margin-bottom: 36px;
     animation: fadeUp 0.8s ease forwards;
     opacity: 0;
     animation-delay: 0.2s;
@@ -228,20 +302,15 @@
     font-weight: 300;
     line-height: 0.92;
     letter-spacing: -0.02em;
-    color: var(--ink);
+    color: #1B3A6B;
     animation: fadeUp 0.8s ease forwards;
     opacity: 0;
     animation-delay: 0.4s;
   }
 
-  .hero-name em {
-    font-style: italic;
-    color: var(--dusty-rose);
-  }
-
   .hero-sub {
-    margin-top: 32px;
-    font-size: 18px;
+    margin-top: 16px;
+    font-size: 24px;
     font-style: italic;
     font-weight: 300;
     color: var(--pencil);
@@ -253,25 +322,27 @@
   }
 
   .hero-cta {
-    margin-top: 48px;
+    margin-top: 36px;
     display: inline-block;
-    padding: 14px 36px;
-    border: 1px solid var(--ink);
+    padding: 10px 24px;
+    border: 1px solid #1B3A6B;
     text-decoration: none;
-    color: var(--ink);
+    color: #1B3A6B;
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: 18px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     transition: all 0.3s;
+    position: relative;
+    z-index: 1;
     animation: fadeUp 0.8s ease forwards;
     opacity: 0;
     animation-delay: 0.8s;
     align-self: flex-start;
   }
   .hero-cta:hover {
-    background: var(--ink);
-    color: var(--cream);
+    background: #1B3A6B;
+    color: #ffffff;
   }
 
   /* ── MARQUEE ── */
@@ -287,7 +358,7 @@
     display: inline-block;
     animation: marquee 22s linear infinite;
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: 14px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
@@ -320,7 +391,7 @@
 
   .section-label {
     font-family: 'Space Mono', monospace;
-    font-size: 9px;
+    font-size: 20px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--fog);
@@ -364,7 +435,7 @@
 
   .stat-label {
     font-family: 'Space Mono', monospace;
-    font-size: 9px;
+    font-size: 20px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--fog);
@@ -400,7 +471,7 @@
 
   .filter-btn {
     font-family: 'Space Mono', monospace;
-    font-size: 9px;
+    font-size: 20px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     background: none;
@@ -429,7 +500,7 @@
     cursor: none;
   }
 
-  .gallery-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .gallery-item:nth-child(1) { grid-column: span 5; }
   .gallery-item:nth-child(2) { grid-column: span 4; }
   .gallery-item:nth-child(3) { grid-column: span 3; }
   .gallery-item:nth-child(4) { grid-column: span 4; }
@@ -440,14 +511,20 @@
 
   .gallery-artwork {
     width: 100%;
-    aspect-ratio: 1;
     display: flex;
-    align-items: center;
+    
     justify-content: center;
     background: var(--paper);
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
+    align-items: flex-start;
+  }
+
+  .gallery-artwork img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   .gallery-item:nth-child(1) .gallery-artwork { aspect-ratio: unset; height: 100%; min-height: 400px; }
@@ -488,7 +565,7 @@
 
   .gallery-info-medium {
     font-family: 'Space Mono', monospace;
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--blush);
@@ -536,7 +613,7 @@
     letter-spacing: -0.02em;
   }
 
-  .contact-title em { color: var(--dusty-rose); font-style: italic; }
+  .contact-title em { color: #4169E1; font-style: italic; }
 
   .contact-sub {
     margin-top: 20px;
@@ -670,20 +747,29 @@
 </head>
 <body>
 
-<!-- Cursors -->
-<div class="cursor" id="cursor"></div>
+<!-- Cursor (matching Lovable CustomCursor.tsx) -->
 <div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-paw" id="cursorPaw">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden>
+    <!-- main pad — exact path from CustomCursor.tsx -->
+    <path d="M12 13.2c-3.2 0-5.6 2-5.6 4.4 0 1.7 1.4 2.9 3.1 2.9 1 0 1.7-.4 2.5-.4s1.5.4 2.5.4c1.7 0 3.1-1.2 3.1-2.9 0-2.4-2.4-4.4-5.6-4.4z" />
+    <!-- toe beans -->
+    <ellipse cx="6.2"  cy="10.8" rx="1.6" ry="2" />
+    <ellipse cx="17.8" cy="10.8" rx="1.6" ry="2" />
+    <ellipse cx="9"    cy="6.6"  rx="1.5" ry="2" />
+    <ellipse cx="15"   cy="6.6"  rx="1.5" ry="2" />
+  </svg>
+</div>
 
 <!-- ── NAV ── -->
 <nav>
   <a href="#" class="nav-logo">
-    <!-- Cat logo based on the signature: two ear triangles + dot eyes -->
-    <img src="Images/Gatita-logo.png" alt="Gatita logo">
+    <img class="cat-logo" src="Images/Gatita-logo.png" alt="Gatita logo">
   </a>
   <ul class="nav-links">
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><b><a href="#gallery">Gallery</a></b></li>
+    <li><b><a href="#about">About</a></b></li>
+    <li><b><a href="#contact">Contact</a></b></li>
   </ul>
 </nav>
 
@@ -692,23 +778,11 @@
   <!-- Your drawing sits here as the background -->
   <div class="hero-drawing-bg"></div>
 
-  <!-- Placeholder frame — remove this div once you add your image to hero-drawing-bg -->
-  <div class="hero-drawing-placeholder">
-    <div class="hero-drawing-placeholder-box">
-      <svg class="placeholder-icon" width="36" height="36" viewBox="0 0 36 36" fill="none">
-        <rect x="4" y="4" width="28" height="28" rx="2" stroke="#6b6560" stroke-width="1.5"/>
-        <path d="M4 24 L12 16 L20 22 L26 14 L32 20" stroke="#6b6560" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <circle cx="12" cy="12" r="3" stroke="#6b6560" stroke-width="1.5"/>
-      </svg>
-      <span class="placeholder-label">your drawing<br>goes here<br><br>set src in<br>.hero-drawing-bg</span>
-    </div>
-  </div>
-
   <!-- Text content -->
   <div class="hero-left">
-    <p class="hero-tag">🐈‍⬛ &nbsp;Texas-based artist</p>
-    <h1 class="hero-name">Ga<em>ti</em>ta</h1>
-    <p class="hero-sub">Capturing the chaos, the audacity, and the sheer comedy of cats — one drawing at a time.</p>
+    <p class="hero-tag">🐈‍⬛ &nbsp;Colombo-Texan artist</p>
+    <img class="hero-name" src="Images/Gatita-text.png" height="400 px" width="700">
+    <p class="hero-sub">Capturing the chaos, the audacity, and the sheer comedy of cats... <b>one drawing at a time.</b></p>
     <a href="#gallery" class="hero-cta">View my work</a>
   </div>
 </section>
@@ -716,25 +790,67 @@
 <!-- ── MARQUEE ── -->
 <div class="marquee-wrap">
   <div class="marquee-track">
+    <span>Cats</span><span class="dot">✦</span>
+    <span>Portraits</span><span class="dot">✦</span>
+    <span>The Whimsy</span><span class="dot">✦</span>
+    <span>The Not-So-Whimsy</span><span class="dot">✦</span>
     <span>Pen & Ink</span><span class="dot">✦</span>
     <span>Pencil</span><span class="dot">✦</span>
     <span>Watercolor</span><span class="dot">✦</span>
-    <span>Chaotic Cats</span><span class="dot">✦</span>
-    <span>Texas</span><span class="dot">✦</span>
-    <span>Self-taught</span><span class="dot">✦</span>
-    <span>Two Cat Household</span><span class="dot">✦</span>
-    <span>Whimsy & Wit</span><span class="dot">✦</span>
-    <span>Gatita</span><span class="dot">✦</span>
+    <span>Chaos & Comedy</span><span class="dot">✦</span>
+    <span>Traditional</span><span class="dot">✦</span>
+    <span>Contemporary</span><span class="dot">✦</span>
+    <span>Cats</span><span class="dot">✦</span>
+    <span>Portraits</span><span class="dot">✦</span>
+    <span>The Whimsy</span><span class="dot">✦</span>
+    <span>The Not-So-Whimsy</span><span class="dot">✦</span>
     <span>Pen & Ink</span><span class="dot">✦</span>
     <span>Pencil</span><span class="dot">✦</span>
     <span>Watercolor</span><span class="dot">✦</span>
-    <span>Chaotic Cats</span><span class="dot">✦</span>
-    <span>Texas</span><span class="dot">✦</span>
-    <span>Self-taught</span><span class="dot">✦</span>
-    <span>Two Cat Household</span><span class="dot">✦</span>
-    <span>Whimsy & Wit</span><span class="dot">✦</span>
-    <span>Gatita</span><span class="dot">✦</span>
+    <span>Chaos & Comedy</span><span class="dot">✦</span>
+    <span>Traditional</span><span class="dot">✦</span>
+    <span>Contemporary</span><span class="dot">✦</span>
   </div>
+</div>
+
+<!-- ── CAT CHASE ANIMATION ── -->
+<div class="cat-chase">
+
+  <!-- YarnBall leads — starts further left than the cat -->
+  <div class="chase-ball">
+    <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden>
+      <circle cx="16" cy="16" r="14" fill="#c4927a"/>
+      <g stroke="white" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.85">
+        <path d="M2.5 18 C 8 14, 12 22, 18 16 S 28 12, 30 18"/>
+        <path d="M3 12 C 9 8, 14 16, 20 10 S 28 8, 30 12"/>
+        <path d="M4 24 C 10 20, 14 28, 22 22 S 28 22, 30 24"/>
+        <path d="M16 2.5 C 14 8, 20 12, 16 18 S 12 26, 16 30"/>
+        <path d="M22 3 C 20 9, 26 13, 22 19 S 18 27, 22 30"/>
+        <path d="M10 3 C 12 9, 6 13, 10 19 S 14 27, 10 30"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- WalkingCat — exact original PlayfulCats.tsx, scaleX(-1) to face left toward ball -->
+  <div class="chase-cat">
+    <svg viewBox="0 0 70 36" width="70" height="36" aria-hidden style="transform:scaleX(-1)">
+      <g fill="#1a1612">
+        <ellipse cx="36" cy="22" rx="20" ry="8"/>
+        <circle cx="55" cy="18" r="7"/>
+        <path d="M50 11 L52 6 L54 12 Z"/>
+        <path d="M56 11 L58 6 L60 12 Z"/>
+        <circle cx="57" cy="17" r="0.9" fill="white"/>
+        <rect x="22" y="28" width="2.4" height="6" class="cat-leg-front"/>
+        <rect x="30" y="28" width="2.4" height="6" class="cat-leg-back"/>
+        <rect x="42" y="28" width="2.4" height="6" class="cat-leg-back"/>
+        <rect x="50" y="28" width="2.4" height="6" class="cat-leg-front"/>
+      </g>
+      <path class="cat-tail-path"
+        d="M16 22 C 8 20, 4 12, 8 6"
+        stroke="#1a1612" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
 </div>
 
 <!-- ── GALLERY ── -->
@@ -752,473 +868,105 @@
   <div class="gallery-grid reveal">
     <!-- Item 1: Large -->
     <div class="gallery-item">
-      <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="500" fill="#ede8de"/>
-          <!-- CONTEMPORARY: flat geometric table — a bold rectangle, no legs, just a shape -->
-          <rect x="40" y="300" width="320" height="10" fill="#2e2925" opacity="0.85"/>
-          <!-- CONTEMPORARY: objects as flat color blocks, no outlines, just forms -->
-          <!-- Cup as a pure geometric cylinder suggestion -->
-          <rect x="130" y="240" width="42" height="60" rx="4" fill="#c4927a" opacity="0.5"/>
-          <ellipse cx="151" cy="240" rx="21" ry="7" fill="#c4927a" opacity="0.6"/>
-          <!-- Falling plant as abstract blob + stem line -->
-          <circle cx="300" cy="220" r="28" fill="#8a9e8c" opacity="0.4"/>
-          <circle cx="318" cy="235" r="18" fill="#8a9e8c" opacity="0.3"/>
-          <line x1="300" y1="248" x2="310" y2="300" stroke="#8a9e8c" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- Dirt scatter as small dots — contemporary mark-making -->
-          <circle cx="330" cy="315" r="3" fill="#6b6560" opacity="0.3"/>
-          <circle cx="342" cy="318" r="2" fill="#6b6560" opacity="0.25"/>
-          <circle cx="352" cy="312" r="4" fill="#6b6560" opacity="0.2"/>
-          <circle cx="322" cy="322" r="2.5" fill="#6b6560" opacity="0.2"/>
-          <!-- Book as a bold flat trapezoid, tilted -->
-          <polygon points="185,270 230,265 235,300 190,300" fill="#b8b0a6" opacity="0.5"/>
-          <!-- Motion lines as abstract parallel dashes — very contemporary -->
-          <line x1="28" y1="250" x2="82" y2="250" stroke="#2e2925" stroke-width="1.5" opacity="0.15" stroke-linecap="round"/>
-          <line x1="28" y1="260" x2="88" y2="260" stroke="#2e2925" stroke-width="2" opacity="0.1" stroke-linecap="round"/>
-          <line x1="28" y1="270" x2="78" y2="270" stroke="#2e2925" stroke-width="1.5" opacity="0.15" stroke-linecap="round"/>
-
-          <!-- TRADITIONAL: cat drawn with full realistic intention — cross-hatched, modeled -->
-          <!-- Body -->
-          <ellipse cx="200" cy="235" rx="72" ry="58" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Body cross-hatch shading -->
-          <line x1="148" y1="215" x2="185" y2="250" stroke="#2e2925" stroke-width="0.6" opacity="0.2"/>
-          <line x1="158" y1="210" x2="195" y2="248" stroke="#2e2925" stroke-width="0.6" opacity="0.2"/>
-          <line x1="168" y1="208" x2="205" y2="246" stroke="#2e2925" stroke-width="0.6" opacity="0.2"/>
-          <line x1="178" y1="207" x2="218" y2="247" stroke="#2e2925" stroke-width="0.6" opacity="0.18"/>
-          <line x1="192" y1="207" x2="232" y2="245" stroke="#2e2925" stroke-width="0.6" opacity="0.15"/>
-          <!-- Head -->
-          <ellipse cx="200" cy="160" rx="62" ry="58" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Subtle volumetric shading on cheek -->
-          <path d="M240 150 Q255 165 248 180" stroke="#2e2925" stroke-width="0.7" opacity="0.12" fill="none" stroke-linecap="round"/>
-          <path d="M244 148 Q260 163 252 178" stroke="#2e2925" stroke-width="0.7" opacity="0.1" fill="none" stroke-linecap="round"/>
-          <!-- Ears with full form -->
-          <path d="M153 132 L138 90 L178 122" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M247 132 L262 90 L222 122" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M155 128 L143 95 L175 120" fill="#e8d5c4"/>
-          <path d="M245 128 L257 95 L225 120" fill="#e8d5c4"/>
-          <!-- Smug half-closed eyes — carefully drawn -->
-          <path d="M170 155 Q182 149 194 155" stroke="#2e2925" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <ellipse cx="182" cy="158" rx="6" ry="5" fill="#2e2925"/>
-          <circle cx="185" cy="155" r="2" fill="white"/>
-          <path d="M206 155 Q218 149 230 155" stroke="#2e2925" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <ellipse cx="218" cy="158" rx="6" ry="5" fill="#2e2925"/>
-          <circle cx="221" cy="155" r="2" fill="white"/>
-          <!-- Nose — rendered -->
-          <path d="M193 174 L200 180 L207 174 Z" fill="#c4927a"/>
-          <!-- Mouth — smirk -->
-          <path d="M192 180 Q200 185 208 180" stroke="#2e2925" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-          <!-- Whiskers -->
-          <line x1="108" y1="168" x2="174" y2="173" stroke="#2e2925" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
-          <line x1="106" y1="177" x2="174" y2="178" stroke="#2e2925" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
-          <line x1="226" y1="173" x2="292" y2="168" stroke="#2e2925" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
-          <line x1="226" y1="178" x2="294" y2="177" stroke="#2e2925" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
-          <!-- ARM — carefully rendered foreshortened paw -->
-          <path d="M258 245 Q308 232 335 248" stroke="#2e2925" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <ellipse cx="340" cy="252" rx="18" ry="11" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.6" transform="rotate(-8 340 252)"/>
-          <!-- Toe beans on paw -->
-          <circle cx="332" cy="248" r="3" fill="#e8d5c4" stroke="#2e2925" stroke-width="0.8"/>
-          <circle cx="340" cy="246" r="3" fill="#e8d5c4" stroke="#2e2925" stroke-width="0.8"/>
-          <circle cx="348" cy="249" r="3" fill="#e8d5c4" stroke="#2e2925" stroke-width="0.8"/>
-          <!-- Tail -->
-          <path d="M132 278 Q82 308 102 342 Q118 362 144 345" stroke="#2e2925" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- CONTEMPORARY: speech bubble as pure flat geometric — no drop shadow, no frills -->
-          <rect x="252" y="62" width="120" height="52" rx="0" fill="#faf7f2"/>
-          <polygon points="272,114 258,134 288,114" fill="#faf7f2"/>
-          <text x="266" y="86" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#2e2925">gravity</text>
-          <text x="264" y="103" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#2e2925">check ✓</text>
-        </svg>
-        <div class="gallery-info">
-          <span class="gallery-info-title">Gravity Check</span>
-          <span class="gallery-info-medium">Pen & Ink</span>
-        </div>
-      </div>
+      <a href="https://www.instagram.com/p/DWUsrRJj41o/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
+        <div class="gallery-artwork"> 
+            <img src="Images/sink-tivities.png" alt="sink-tivities" class="art-placeholder"> 
+            <div class="gallery-info"> 
+                <span class="gallery-info-title">sink-tivities</span> 
+                <span class="gallery-info-medium">Ink</span> 
+            </div> 
+        </div> 
+      </a>
     </div>
 
     <!-- Item 2 -->
     <div class="gallery-item">
+      <a href="https://www.instagram.com/p/DVbw82YD9A_/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="260" fill="#f0ebe0"/>
-          <!-- Watercolor bag shape -->
-          <path d="M70 80 L60 230 L240 230 L230 80 Z" fill="#c4927a" opacity="0.2" stroke="#2e2925" stroke-width="1.5" stroke-linejoin="round"/>
-          <!-- bag top fold -->
-          <path d="M70 80 Q150 70 230 80" stroke="#2e2925" stroke-width="1.5" fill="none"/>
-          <!-- Bag crinkle lines -->
-          <line x1="100" y1="100" x2="95" y2="180" stroke="#2e2925" stroke-width="0.8" opacity="0.2" stroke-linecap="round"/>
-          <line x1="150" y1="95" x2="150" y2="185" stroke="#2e2925" stroke-width="0.8" opacity="0.2" stroke-linecap="round"/>
-          <line x1="200" y1="100" x2="205" y2="180" stroke="#2e2925" stroke-width="0.8" opacity="0.2" stroke-linecap="round"/>
-          <!-- Cat BURST out of bag — wide eyes, floofy tail -->
-          <!-- Body in bag (just suggestion) -->
-          <ellipse cx="150" cy="175" rx="55" ry="40" fill="#f5f0e8" opacity="0.9"/>
-          <!-- Head popping up, STARTLED -->
-          <ellipse cx="150" cy="108" rx="52" ry="48" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Ears fully erect — alarmed -->
-          <path d="M108 84 L96 48 L130 78" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M192 84 L204 48 L170 78" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M110 81 L101 52 L128 76" fill="#e8d5c4"/>
-          <path d="M190 81 L199 52 L172 76" fill="#e8d5c4"/>
-          <!-- HUGE startled eyes -->
-          <circle cx="132" cy="108" r="16" fill="white" stroke="#2e2925" stroke-width="1.8"/>
-          <circle cx="168" cy="108" r="16" fill="white" stroke="#2e2925" stroke-width="1.8"/>
-          <circle cx="132" cy="108" r="11" fill="#2e2925"/>
-          <circle cx="168" cy="108" r="11" fill="#2e2925"/>
-          <circle cx="137" cy="103" r="4" fill="white"/>
-          <circle cx="173" cy="103" r="4" fill="white"/>
-          <!-- tiny highlight dots -->
-          <circle cx="126" cy="112" r="2" fill="white"/>
-          <circle cx="162" cy="112" r="2" fill="white"/>
-          <!-- O mouth — shocked -->
-          <ellipse cx="150" cy="128" rx="8" ry="10" fill="#2e2925"/>
-          <!-- Whiskers fanned out in alarm -->
-          <line x1="60" y1="108" x2="118" y2="114" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="58" y1="120" x2="118" y2="120" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="60" y1="132" x2="118" y2="126" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="182" y1="114" x2="240" y2="108" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="182" y1="120" x2="242" y2="120" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="182" y1="126" x2="240" y2="132" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <!-- Puffy panic tail sticking up from bag -->
-          <path d="M210 175 Q250 150 245 110 Q242 90 255 80" stroke="#2e2925" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <!-- Fluffy lines on tail -->
-          <line x1="220" y1="158" x2="228" y2="150" stroke="#2e2925" stroke-width="1" opacity="0.4"/>
-          <line x1="235" y1="138" x2="243" y2="130" stroke="#2e2925" stroke-width="1" opacity="0.4"/>
-          <!-- Stars/shock marks -->
-          <text x="42" y="68" font-size="16" fill="#2e2925" opacity="0.4">!</text>
-          <text x="245" y="65" font-size="16" fill="#2e2925" opacity="0.4">!</text>
-          <text x="144" y="44" font-size="12" fill="#c4927a" opacity="0.5">✦</text>
-        </svg>
+        <img src="Images/consentida.png" alt="consentida" class="art-placeholder">
         <div class="gallery-info">
-          <span class="gallery-info-title">Bag Jump Scare</span>
-          <span class="gallery-info-medium">Watercolor & Ink</span>
+          <span class="gallery-info-title">consentida</span>
+          <span class="gallery-info-medium">Ink</span>
         </div>
       </div>
+      </a>
     </div>
 
     <!-- Item 3 -->
     <div class="gallery-item">
+      <a href="https://www.instagram.com/p/DVpSIuVib78/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 240 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="240" height="260" fill="#f5f0e8"/>
-          <!-- 3am text -->
-          <text x="14" y="38" font-family="Space Mono, monospace" font-size="9" fill="#2e2925" opacity="0.25" letter-spacing="2">3:00 AM</text>
-          <!-- Motion blur lines behind cat -->
-          <line x1="10" y1="155" x2="80" y2="150" stroke="#2e2925" stroke-width="1.2" opacity="0.12" stroke-linecap="round"/>
-          <line x1="10" y1="165" x2="85" y2="162" stroke="#2e2925" stroke-width="1.8" opacity="0.1" stroke-linecap="round"/>
-          <line x1="10" y1="175" x2="75" y2="174" stroke="#2e2925" stroke-width="1.2" opacity="0.12" stroke-linecap="round"/>
-          <line x1="10" y1="185" x2="80" y2="183" stroke="#2e2925" stroke-width="0.8" opacity="0.08" stroke-linecap="round"/>
-          <!-- Cat RUNNING full stretch - side view, pencil style -->
-          <!-- Body fully extended horizontal -->
-          <ellipse cx="148" cy="168" rx="62" ry="28" fill="none" stroke="#2e2925" stroke-width="1.6" transform="rotate(-8 148 168)"/>
-          <!-- Head forward, chin low like a sprinter -->
-          <ellipse cx="207" cy="148" rx="34" ry="30" fill="none" stroke="#2e2925" stroke-width="1.6" transform="rotate(-15 207 148)"/>
-          <!-- Ear flat back (speed!) -->
-          <path d="M195 122 L190 102 L214 118" fill="none" stroke="#2e2925" stroke-width="1.5" stroke-linejoin="round" transform="rotate(-15 207 148)"/>
-          <!-- Determined eyes — one visible, focused -->
-          <ellipse cx="222" cy="144" rx="7" ry="8" fill="#2e2925"/>
-          <circle cx="224" cy="141" r="2.5" fill="white"/>
-          <!-- Intense brow line -->
-          <path d="M215 137 Q222 133 228 136" stroke="#2e2925" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Nose -->
-          <path d="M230 152 L234 156 L238 152" fill="#c4927a"/>
-          <!-- Legs all splayed - full gallop -->
-          <!-- Front legs reaching forward -->
-          <path d="M195 175 Q205 195 195 220" stroke="#2e2925" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M180 180 Q185 205 172 228" stroke="#2e2925" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <!-- Back legs pushing off behind -->
-          <path d="M105 175 Q88 200 95 225" stroke="#2e2925" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M118 170 Q102 192 108 218" stroke="#2e2925" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <!-- Paw sketches -->
-          <ellipse cx="194" cy="222" rx="10" ry="5" fill="none" stroke="#2e2925" stroke-width="1.2" transform="rotate(10 194 222)"/>
-          <ellipse cx="171" cy="230" rx="10" ry="5" fill="none" stroke="#2e2925" stroke-width="1.2" transform="rotate(-5 171 230)"/>
-          <ellipse cx="96" cy="226" rx="10" ry="5" fill="none" stroke="#2e2925" stroke-width="1.2" transform="rotate(5 96 226)"/>
-          <!-- Tail PUFFED and flying up -->
-          <path d="M88 162 Q55 130 40 100 Q35 80 50 72" stroke="#2e2925" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <!-- Floof on tail -->
-          <line x1="76" y1="148" x2="66" y2="140" stroke="#2e2925" stroke-width="1" opacity="0.4"/>
-          <line x1="62" y1="128" x2="52" y2="118" stroke="#2e2925" stroke-width="1" opacity="0.4"/>
-          <line x1="50" y1="108" x2="42" y2="98" stroke="#2e2925" stroke-width="1" opacity="0.4"/>
-          <!-- Whiskers streaming behind from speed -->
-          <line x1="194" y1="150" x2="230" y2="147" stroke="#2e2925" stroke-width="0.8" opacity="0.45" stroke-linecap="round"/>
-          <line x1="194" y1="157" x2="232" y2="155" stroke="#2e2925" stroke-width="0.8" opacity="0.45" stroke-linecap="round"/>
-          <!-- Reason unknown label -->
-          <text x="14" y="248" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#6b6560" opacity="0.6">reason: unknown</text>
-        </svg>
+          <img src="Images/a walk in the park.png" alt="a walk in the park" class="art-placeholder">
         <div class="gallery-info">
-          <span class="gallery-info-title">3AM Zoomies</span>
-          <span class="gallery-info-medium">Pencil</span>
+          <span class="gallery-info-title">a walk in the park</span>
+          <span class="gallery-info-medium">Ink</span>
         </div>
       </div>
+      </a>
     </div>
 
     <!-- Item 4 -->
-    <div class="gallery-item">
+    <div class="gallery-item"> 
+      <a href="https://www.instagram.com/p/DVeg-ELjx84/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="260" fill="#ede8de"/>
-          <!-- Watercolor wash behind -->
-          <ellipse cx="150" cy="170" rx="110" ry="70" fill="#c4927a" opacity="0.1"/>
-          <!-- Box — way too small for cat -->
-          <rect x="88" y="168" width="124" height="78" rx="2" fill="#faf7f2" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Box flaps open/folded -->
-          <path d="M88 168 L88 140 L150 155 L150 168" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M212 168 L212 140 L150 155 L150 168" fill="#ede8de" stroke="#2e2925" stroke-width="1.5" stroke-linejoin="round"/>
-          <!-- Box label -->
-          <text x="112" y="218" font-family="Space Mono, monospace" font-size="7" fill="#2e2925" opacity="0.3">FRAGILE</text>
-          <line x1="105" y1="222" x2="195" y2="222" stroke="#2e2925" stroke-width="0.7" opacity="0.2"/>
-          <!-- Cat body SQUISHED into box, spilling over sides -->
-          <!-- Butt/back half overflow on right side -->
-          <ellipse cx="230" cy="195" rx="30" ry="22" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.5"/>
-          <!-- Body in box -->
-          <ellipse cx="150" cy="180" rx="58" ry="30" fill="#f5f0e8"/>
-          <!-- Front overflow / paws hanging out -->
-          <path d="M90" fill="none"/>
-          <!-- Cat head, content expression, loafed in box -->
-          <ellipse cx="150" cy="152" rx="50" ry="44" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Ears -->
-          <path d="M112 130 L100 98 L132 122" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M188 130 L200 98 L168 122" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M114 127 L105 101 L130 120" fill="#e8d5c4"/>
-          <path d="M186 127 L195 101 L170 120" fill="#e8d5c4"/>
-          <!-- Eyes — perfectly content, half-closed bliss -->
-          <path d="M128 150 Q138 144 148 150" stroke="#2e2925" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          <path d="M152 150 Q162 144 172 150" stroke="#2e2925" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          <ellipse cx="138" cy="153" rx="5" ry="4" fill="#2e2925"/>
-          <ellipse cx="162" cy="153" rx="5" ry="4" fill="#2e2925"/>
-          <!-- Tiny content smile -->
-          <path d="M142 165 Q150 170 158 165" stroke="#2e2925" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <path d="M144 168 L150 172 L156 168 Z" fill="#c4927a"/>
-          <!-- Whiskers -->
-          <line x1="65" y1="153" x2="124" y2="157" stroke="#2e2925" stroke-width="1" opacity="0.45" stroke-linecap="round"/>
-          <line x1="65" y1="162" x2="124" y2="162" stroke="#2e2925" stroke-width="1" opacity="0.45" stroke-linecap="round"/>
-          <line x1="176" y1="157" x2="235" y2="153" stroke="#2e2925" stroke-width="1" opacity="0.45" stroke-linecap="round"/>
-          <line x1="176" y1="162" x2="235" y2="162" stroke="#2e2925" stroke-width="1" opacity="0.45" stroke-linecap="round"/>
-          <!-- Tail curled outside box -->
-          <path d="M215 210 Q250 218 248 235 Q246 248 225 242" stroke="#2e2925" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- Speech bubble: "fits" -->
-          <ellipse cx="58" cy="100" rx="40" ry="22" fill="#faf7f2" stroke="#2e2925" stroke-width="1.2"/>
-          <path d="M75 120 L80 135 L65 122" fill="#faf7f2" stroke="#2e2925" stroke-width="1.2" stroke-linejoin="round"/>
-          <text x="32" y="104" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#2e2925">if i fits</text>
-          <text x="36" y="118" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#2e2925">i sits</text>
-        </svg>
+        <img src="Images/if i fits i sits.png" alt="if i fits i sits" class="art-placeholder">
         <div class="gallery-info">
-          <span class="gallery-info-title">If I Fits</span>
+          <span class="gallery-info-title">if i fits i sits</span>
           <span class="gallery-info-medium">Watercolor & Ink</span>
         </div>
       </div>
+      </a>
     </div>
 
     <!-- Item 5 -->
     <div class="gallery-item">
+      <a href="https://www.instagram.com/p/DXUj03UEeEP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 240 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="240" height="260" fill="#f0ebe0"/>
-          <!-- two cats, one black one light, sitting side by side, staring at something off screen with identical unimpressed expression -->
-          <!-- Cat 1 — light, loaf position -->
-          <ellipse cx="78" cy="180" rx="52" ry="38" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.6"/>
-          <!-- head -->
-          <ellipse cx="78" cy="128" rx="44" ry="40" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.6"/>
-          <path d="M44 108 L33 78 L60 100" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M112 108 L123 78 L96 100" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M46 105 L37 80 L58 98" fill="#e8d5c4"/>
-          <path d="M110 105 L119 80 L98 98" fill="#e8d5c4"/>
-          <!-- Unimpressed flat eyes -->
-          <rect x="56" y="124" width="16" height="8" rx="4" fill="#2e2925"/>
-          <rect x="84" y="124" width="16" height="8" rx="4" fill="#2e2925"/>
-          <circle cx="62" cy="127" r="2" fill="white"/>
-          <circle cx="90" cy="127" r="2" fill="white"/>
-          <!-- flat mouth -->
-          <line x1="68" y1="142" x2="88" y2="142" stroke="#2e2925" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M72 140 L78 144 L84 140" fill="#c4927a"/>
-          <!-- whiskers -->
-          <line x1="20" y1="134" x2="56" y2="137" stroke="#2e2925" stroke-width="0.9" opacity="0.45" stroke-linecap="round"/>
-          <line x1="20" y1="141" x2="56" y2="141" stroke="#2e2925" stroke-width="0.9" opacity="0.45" stroke-linecap="round"/>
-          <line x1="100" y1="137" x2="136" y2="134" stroke="#2e2925" stroke-width="0.9" opacity="0.45" stroke-linecap="round"/>
-          <line x1="100" y1="141" x2="136" y2="141" stroke="#2e2925" stroke-width="0.9" opacity="0.45" stroke-linecap="round"/>
-          <!-- paws tucked -->
-          <ellipse cx="64" cy="212" rx="14" ry="7" fill="#e8d5c4" stroke="#2e2925" stroke-width="1.2"/>
-          <ellipse cx="90" cy="212" rx="14" ry="7" fill="#e8d5c4" stroke="#2e2925" stroke-width="1.2"/>
-
-          <!-- Cat 2 — black cat, same pose, same expression -->
-          <ellipse cx="172" cy="180" rx="52" ry="38" fill="#2e2925"/>
-          <ellipse cx="172" cy="128" rx="44" ry="40" fill="#2e2925"/>
-          <path d="M138 108 L127 78 L154 100" fill="#2e2925"/>
-          <path d="M206 108 L217 78 L190 100" fill="#2e2925"/>
-          <!-- Same unimpressed eyes — white on black -->
-          <rect x="150" y="124" width="16" height="8" rx="4" fill="#f5f0e8"/>
-          <rect x="178" y="124" width="16" height="8" rx="4" fill="#f5f0e8"/>
-          <circle cx="156" cy="127" r="2" fill="#2e2925"/>
-          <circle cx="184" cy="127" r="2" fill="#2e2925"/>
-          <!-- flat mouth on black cat -->
-          <line x1="162" y1="142" x2="182" y2="142" stroke="#f5f0e8" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- paws -->
-          <ellipse cx="158" cy="212" rx="14" ry="7" fill="#1a1612"/>
-          <ellipse cx="184" cy="212" rx="14" ry="7" fill="#1a1612"/>
-          <!-- shared caption -->
-          <text x="50" y="248" font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#6b6560" opacity="0.65">judging you. both of them.</text>
-        </svg>
+        <img src="Images/curiosity in action.png" alt="curiosity in action" class="art-placeholder">
         <div class="gallery-info">
-          <span class="gallery-info-title">The Jury</span>
-          <span class="gallery-info-medium">Pen & Ink</span>
+          <span class="gallery-info-title">curiosity in action</span>
+          <span class="gallery-info-medium">Ink</span>
         </div>
       </div>
+      </a>
     </div>
 
     <!-- Item 6 -->
     <div class="gallery-item">
+      <a href="https://www.instagram.com/p/DVhQX1AjzOx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 380 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="380" height="260" fill="#f5f0e8"/>
-          <!-- Room wall corner -->
-          <line x1="190" y1="0" x2="190" y2="260" stroke="#2e2925" stroke-width="1" opacity="0.12"/>
-          <line x1="0" y1="200" x2="380" y2="200" stroke="#2e2925" stroke-width="1" opacity="0.15"/>
-          <!-- Watercolor floor wash -->
-          <rect x="0" y="200" width="380" height="60" fill="#c4927a" opacity="0.07"/>
-          <!-- The wall. nothing on it. that's the point. -->
-          <!-- Tiny speck on wall (what cat is staring at) — barely visible -->
-          <circle cx="290" cy="100" r="1.5" fill="#2e2925" opacity="0.3"/>
-          <!-- Cat sitting, facing wall, back to viewer — side/back view -->
-          <!-- Body -->
-          <ellipse cx="120" cy="185" rx="62" ry="55" fill="#2e2925"/>
-          <!-- Head (from behind, just ears and round head) -->
-          <ellipse cx="120" cy="128" rx="44" ry="42" fill="#2e2925"/>
-          <!-- Ears from behind -->
-          <path d="M88 108 L76 72 L108 100" fill="#2e2925"/>
-          <path d="M152 108 L164 72 L132 100" fill="#2e2925"/>
-          <!-- Tiny pink inner ear tips visible from behind -->
-          <path d="M90 105 L80 76 L106 98" fill="#c4927a" opacity="0.3"/>
-          <path d="M150 105 L160 76 L134 98" fill="#c4927a" opacity="0.3"/>
-          <!-- Tail wrapped around, tip flicking -->
-          <path d="M178 220 Q220 210 210 180 Q205 162 185 168" stroke="#2e2925" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <!-- Tail tip slightly lifted — indicator of agitation/focus -->
-          <path d="M185 168 Q176 158 182 148" stroke="#2e2925" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <!-- Paws from behind, sitting -->
-          <ellipse cx="96" cy="232" rx="18" ry="10" fill="#1a1612"/>
-          <ellipse cx="144" cy="232" rx="18" ry="10" fill="#1a1612"/>
-          <!-- Question marks and tiny dots suggesting what cat sees -->
-          <text x="254" y="90" font-family="Cormorant Garamond, serif" font-style="italic" font-size="28" fill="#2e2925" opacity="0.1">?</text>
-          <text x="298" y="110" font-family="Cormorant Garamond, serif" font-style="italic" font-size="18" fill="#2e2925" opacity="0.08">?</text>
-          <!-- Duration label -->
-          <text x="22" y="38" font-family="Space Mono, monospace" font-size="8" fill="#2e2925" opacity="0.3" letter-spacing="1">duration: 47 min</text>
-          <!-- Arrow pointing to speck -->
-          <line x1="318" y1="92" x2="296" y2="100" stroke="#c4927a" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
-          <text x="320" y="90" font-family="Cormorant Garamond, serif" font-style="italic" font-size="9" fill="#c4927a" opacity="0.5">nothing</text>
-        </svg>
+        <Img src="Images/some light reading.png" alt="some light reading" class="art-placeholder"></Img>
         <div class="gallery-info">
-          <span class="gallery-info-title">She Sees Something</span>
-          <span class="gallery-info-medium">Watercolor & Ink</span>
+          <span class="gallery-info-title">some light reading</span>
+          <span class="gallery-info-medium">Watercolor & Charcoal</span>
         </div>
       </div>
+      </a>
     </div>
 
     <!-- Item 7 -->
     <div class="gallery-item">
+      <a href="https://www.instagram.com/p/DVbqkEVDyBS/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="260" fill="#ede8de"/>
-          <!-- Table surface -->
-          <line x1="20" y1="200" x2="280" y2="200" stroke="#2e2925" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-          <!-- Plate -->
-          <ellipse cx="150" cy="196" rx="80" ry="16" fill="#faf7f2" stroke="#2e2925" stroke-width="1.5"/>
-          <ellipse cx="150" cy="188" rx="70" ry="12" fill="none" stroke="#2e2925" stroke-width="1"/>
-          <!-- Food on plate (fish — a classic) -->
-          <!-- Fish skeleton (already half eaten lol) -->
-          <path d="M100 188 Q130 178 160 188" stroke="#2e2925" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <line x1="118" y1="188" x2="118" y2="180" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="130" y1="188" x2="130" y2="178" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="142" y1="188" x2="142" y2="180" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <!-- Fish tail -->
-          <path d="M100 188 L86 182 L90 188 L86 194 Z" fill="none" stroke="#2e2925" stroke-width="1.2" stroke-linejoin="round"/>
-          <!-- CAT caught in act — paw ON the fish, head turning to look at viewer -->
-          <!-- Body on table, sneaking posture low -->
-          <ellipse cx="190" cy="185" rx="58" ry="28" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" transform="rotate(-10 190 185)"/>
-          <!-- Head turned to look AT YOU, caught red-handed -->
-          <ellipse cx="140" cy="150" rx="46" ry="42" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8"/>
-          <!-- Ears back (guilty!) -->
-          <path d="M108 128 L100 98 L128 120" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M172 128 L180 98 L152 120" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M110 125 L104 100 L126 118" fill="#e8d5c4"/>
-          <path d="M170 125 L176 100 L154 118" fill="#e8d5c4"/>
-          <!-- Eyes — wide, frozen like a deer in headlights -->
-          <circle cx="124" cy="148" r="14" fill="white" stroke="#2e2925" stroke-width="1.5"/>
-          <circle cx="156" cy="148" r="14" fill="white" stroke="#2e2925" stroke-width="1.5"/>
-          <circle cx="124" cy="148" r="10" fill="#2e2925"/>
-          <circle cx="156" cy="148" r="10" fill="#2e2925"/>
-          <circle cx="128" cy="143" r="4" fill="white"/>
-          <circle cx="160" cy="143" r="4" fill="white"/>
-          <!-- Nose -->
-          <path d="M133 163 L140 168 L147 163 Z" fill="#c4927a"/>
-          <!-- Whiskers all fanned out, startled -->
-          <line x1="55" y1="154" x2="112" y2="158" stroke="#2e2925" stroke-width="0.9" opacity="0.5" stroke-linecap="round"/>
-          <line x1="52" y1="164" x2="112" y2="163" stroke="#2e2925" stroke-width="0.9" opacity="0.5" stroke-linecap="round"/>
-          <line x1="168" y1="158" x2="226" y2="154" stroke="#2e2925" stroke-width="0.9" opacity="0.5" stroke-linecap="round"/>
-          <line x1="168" y1="163" x2="228" y2="164" stroke="#2e2925" stroke-width="0.9" opacity="0.5" stroke-linecap="round"/>
-          <!-- THE PAW on the fish -->
-          <ellipse cx="168" cy="185" rx="20" ry="12" fill="#f5f0e8" stroke="#2e2925" stroke-width="1.5"/>
-          <!-- claw marks -->
-          <line x1="158" y1="180" x2="155" y2="173" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-          <line x1="167" y1="178" x2="166" y2="171" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-          <line x1="176" y1="180" x2="177" y2="173" stroke="#2e2925" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-        </svg>
+        <img src="Images/meerkat kitty.png" alt="meerkat kitty" class="art-placeholder">
         <div class="gallery-info">
-          <span class="gallery-info-title">I Was Never Here</span>
-          <span class="gallery-info-medium">Pencil</span>
+          <span class="gallery-info-title">meerkat kitty</span>
+          <span class="gallery-info-medium">ink</span>
         </div>
       </div>
+    </a>
     </div>
 
     <!-- Item 8 -->
-    <div class="gallery-item">
+    <!-- <div class="gallery-item">
       <div class="gallery-artwork">
-        <svg class="art-placeholder" viewBox="0 0 240 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="240" height="260" fill="#f0ebe0"/>
-          <!-- Laptop screen (behind cat) -->
-          <rect x="30" y="30" width="180" height="120" rx="8" fill="#1a1612" stroke="#2e2925" stroke-width="1.5"/>
-          <rect x="38" y="38" width="164" height="106" rx="4" fill="#2e2925"/>
-          <!-- Screen text (someone's work, ruined) -->
-          <line x1="50" y1="55" x2="140" y2="55" stroke="#f5f0e8" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
-          <line x1="50" y1="65" x2="160" y2="65" stroke="#f5f0e8" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
-          <line x1="50" y1="75" x2="130" y2="75" stroke="#f5f0e8" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
-          <!-- CAT typed text overriding -->
-          <text x="50" y="108" font-family="Space Mono, monospace" font-size="8" fill="#c4927a" opacity="0.8">jjjjjjjkkkkkk</text>
-          <text x="50" y="120" font-family="Space Mono, monospace" font-size="8" fill="#c4927a" opacity="0.8">lllllllllll;;;;</text>
-          <text x="50" y="132" font-family="Space Mono, monospace" font-size="8" fill="#c4927a" opacity="0.6">mmmmmmm,,,</text>
-          <!-- Laptop base/keyboard -->
-          <rect x="20" y="148" width="200" height="50" rx="6" fill="#ede8de" stroke="#2e2925" stroke-width="1.5"/>
-          <!-- Keyboard keys suggestion -->
-          <rect x="30" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="48" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="66" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="84" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="102" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="120" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="138" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="156" y="156" width="14" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <rect x="174" y="156" width="36" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <!-- spacebar -->
-          <rect x="60" y="182" width="120" height="8" rx="2" fill="#f5f0e8" stroke="#2e2925" stroke-width="0.8"/>
-          <!-- CAT sitting on keyboard — loaf position, very smug -->
-          <ellipse cx="120" cy="155" rx="60" ry="32" fill="#2e2925"/>
-          <!-- head -->
-          <ellipse cx="120" cy="118" rx="42" ry="38" fill="#2e2925"/>
-          <!-- Ears -->
-          <path d="M88 100 L78 68 L106 92" fill="#2e2925"/>
-          <path d="M152 100 L162 68 L134 92" fill="#2e2925"/>
-          <!-- Eyes — smug slits -->
-          <path d="M100 116 Q110 110 120 116" stroke="#f5f0e8" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-          <path d="M120 116 Q130 110 140 116" stroke="#f5f0e8" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-          <ellipse cx="110" cy="119" rx="5" ry="4" fill="#f5f0e8"/>
-          <ellipse cx="130" cy="119" rx="5" ry="4" fill="#f5f0e8"/>
-          <!-- white whiskers on black cat -->
-          <line x1="52" y1="118" x2="96" y2="122" stroke="#f5f0e8" stroke-width="0.8" opacity="0.5" stroke-linecap="round"/>
-          <line x1="52" y1="126" x2="96" y2="126" stroke="#f5f0e8" stroke-width="0.8" opacity="0.5" stroke-linecap="round"/>
-          <line x1="144" y1="122" x2="188" y2="118" stroke="#f5f0e8" stroke-width="0.8" opacity="0.5" stroke-linecap="round"/>
-          <line x1="144" y1="126" x2="188" y2="126" stroke="#f5f0e8" stroke-width="0.8" opacity="0.5" stroke-linecap="round"/>
-        </svg>
+        
         <div class="gallery-info">
           <span class="gallery-info-title">Working From Home</span>
           <span class="gallery-info-medium">Pen & Ink</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
 
@@ -1226,9 +974,9 @@
 <!-- ── ABOUT ── -->
 <section class="about" id="about">
   <div class="about-left reveal">
-    <p class="section-label">The Artist</p>
+    <p class="section-label">About Gatita</p>
     <p class="about-text">
-      <strong>Gatita</strong> is a self-taught artist from Texas who picked up a pencil at 11 and never really put it down.
+      <strong>Gatita</strong> is a self-taught artist — Colombian born, Texas raised, and an auto-proclaimed Colombo-Texan. She picked up a pencil at 11 and never really put it down.
       <br><br>
       She draws all kinds of things — but two very opinionated cats keep stealing the spotlight. They knock things off tables, stare at walls for no reason, and have absolutely no remorse about any of it. <em>Perfect muses.</em>
       <br><br>
@@ -1245,8 +993,8 @@
       <span class="stat-label">Cat muses (and counting)</span>
     </div>
     <div class="about-stat">
-      <span class="stat-number">TX</span>
-      <span class="stat-label">Based in Texas</span>
+      <span class="stat-number" style="font-size:42px; letter-spacing:-0.02em">COL·TX</span>
+      <span class="stat-label">Colombo-Texan</span>
     </div>
   </div>
 </section>
@@ -1281,26 +1029,26 @@
     </div>
   </div>
 
-  <div class="contact-form reveal" style="transition-delay: 0.2s">
+  <form class="contact-form reveal" style="transition-delay: 0.2s" onsubmit="sendMail(event)">
     <div class="form-group">
       <label class="form-label">Your Name</label>
-      <input type="text" class="form-input" placeholder="What should I call you?">
+      <input type="text" id="name" class="form-input" placeholder="What should I call you?">
     </div>
     <div class="form-group">
       <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="your@email.com">
+      <input type="email" id="email" class="form-input" placeholder="your@email.com">
     </div>
     <div class="form-group">
       <label class="form-label">Message</label>
-      <textarea class="form-input" placeholder="Tell me about your idea, a commission, or just say meow 🐈‍⬛"></textarea>
+      <textarea id="message" class="form-input" placeholder="Tell me about your idea, a commission, or just say meow 🐈‍⬛"></textarea>
     </div>
-    <button class="form-submit">Send Message</button>
-  </div>
+    <button type="submit" class="form-submit">Send Message</button>
+  </form>
 </section>
 
 <!-- ── FOOTER ── -->
 <footer>
-  <p class="footer-text">© 2025 Gatita &nbsp;·&nbsp; Texas</p>
+  <p class="footer-text">© 2025 Gatita &nbsp;·&nbsp; Colombo-Texan</p>
   <svg class="footer-cat" width="32" height="20" viewBox="0 0 44 44" fill="none">
     <path d="M9 24 L14 10 L19 24" stroke="#f5f0e8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M25 24 L30 10 L35 24" stroke="#f5f0e8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1312,39 +1060,39 @@
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
+  // Custom cursor — ported from Lovable's CustomCursor.tsx
+  const paw  = document.getElementById('cursorPaw');
   const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
+  let mx = window.innerWidth  / 2;
+  let my = window.innerHeight / 2;
+  let rx = mx, ry = my;
+  let lastX = mx;
+
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    // tilt paw with horizontal motion (matches CustomCursor.tsx dx * 1.2, clamped ±18)
+    const dx   = mx - lastX;
+    lastX = mx;
+    const tilt = Math.max(-18, Math.min(18, dx * 1.2));
+    paw.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%) rotate(${tilt}deg)`;
   });
 
-  function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  // Cursor grow on hover
-  document.querySelectorAll('a, button, .gallery-item').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(1.8)';
-      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
-      ring.style.borderColor = '#c4927a';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.borderColor = '#c4927a';
-    });
+  window.addEventListener('mouseover', e => {
+    const t = e.target;
+    const interactive = t.closest("a, button, [role='button'], input, textarea, .gallery-item");
+    ring.classList.toggle('is-hover', !!interactive);
+    paw.classList.toggle('is-hover',  !!interactive);
   });
+
+  // Ring follows with lag (matches tick loop in CustomCursor.tsx, factor 0.16)
+  (function tick() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(tick);
+  })();
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
@@ -1366,15 +1114,16 @@
   });
 
   // Form submit feedback
-  document.querySelector('.form-submit').addEventListener('click', () => {
-    const btn = document.querySelector('.form-submit');
-    btn.textContent = 'Sent! 🐾';
-    btn.style.background = '#8a9e8c';
-    setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.style.background = '';
-    }, 3000);
-  });
+  function sendMail(e) {
+  e.preventDefault();
+    const name    = document.getElementById('name').value;
+    const email   = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Commission / Message from ' + name);
+    const body    = encodeURIComponent('From: ' + name + '\nEmail: ' + email + '\n\n' + message);
+    window.location.href = `mailto:murillosanchezsofia@gmail.com?subject=${subject}&body=${body}`;
+  }
+  
 </script>
 </body>
 </html>
